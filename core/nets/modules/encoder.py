@@ -16,6 +16,7 @@ class Encoder(nn.Module):
         self.encoder = timm.create_model(
             'tf_efficientnet_b0.ns_jft_in1k',
             pretrained=True,
+            pretrained_cfg_overlay=dict(file='/home/wuaodi/.cache/huggingface/hub/models--timm--tf_efficientnet_b0.ns_jft_in1k/pytorch_model.bin'),
             features_only=True,
             out_indices=[4]
         )
