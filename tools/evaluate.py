@@ -210,8 +210,22 @@ def evaluate(cfg):
     # Input image
     imshow(batch["image"][0], is_tensor=True, savefn=str(save_dir / "image.jpg"))
 
-    # Mesh
-    plot_3dmesh(mesh_pr, markers_for_vertices=False, savefn=str(save_dir / "mesh.jpg"))
+    # Mesh - 保存多个视角
+    view_angles = [
+        dict(x=0.75, y=0.75, z=0.5),    # 默认视角
+        dict(x=2.0, y=0, z=0),          # 右侧视图
+        dict(x=0, y=2.0, z=0),          # 正面视图
+        dict(x=0, y=0, z=2.0),          # 俯视图
+        dict(x=1.5, y=1.5, z=1.5),      # 45度视角
+    ]
+
+    for i, camera_pos in enumerate(view_angles):
+        plot_3dmesh(
+            mesh_pr, 
+            markers_for_vertices=False, 
+            savefn=str(save_dir / f"mesh_view{i}.jpg"),
+            camera_pos=camera_pos
+        )
 
     # Metric
     savemat(str(save_dir / "metrics.mat"), metrics)

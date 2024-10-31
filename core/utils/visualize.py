@@ -42,7 +42,7 @@ def imshow(image, is_tensor=False, is_mask=False, savefn=None):
         plt.show()
 
 
-def plot_3dmesh(meshes, markers_for_vertices=True, add_line=False, groundtruth=False, savefn=None):
+def plot_3dmesh(meshes, markers_for_vertices=True, add_line=False, groundtruth=False, savefn=None, camera_pos=None):
     if not isinstance(meshes, list):
         meshes = [meshes]
 
@@ -93,7 +93,6 @@ def plot_3dmesh(meshes, markers_for_vertices=True, add_line=False, groundtruth=F
             margin=go.layout.Margin(
                 l=0, r=0, b=0, t=0
             ),
-
         )
     )
 
@@ -101,6 +100,10 @@ def plot_3dmesh(meshes, markers_for_vertices=True, add_line=False, groundtruth=F
     tick_size = 14
     font_size = 28
     axis_visible = False
+    
+    # 使用自定义相机位置或默认位置
+    camera_dict = dict(eye=camera_pos if camera_pos is not None else CAMERA)
+    
     fig.update_scenes(
         xaxis_visible=axis_visible,
         yaxis_visible=axis_visible,
@@ -114,7 +117,7 @@ def plot_3dmesh(meshes, markers_for_vertices=True, add_line=False, groundtruth=F
         xaxis_titlefont_size=font_size,
         yaxis_titlefont_size=font_size,
         zaxis_titlefont_size=font_size,
-        camera=dict(eye=CAMERA)
+        camera=camera_dict
     )
 
     if savefn:
