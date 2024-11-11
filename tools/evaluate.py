@@ -13,6 +13,7 @@ import torch
 from pytorch3d.structures import Meshes, Pointclouds
 from pytorch3d.transforms import so3_relative_angle
 from pytorch3d.loss       import chamfer_distance
+from pytorch3d.io import save_obj
 
 import _init_paths
 
@@ -209,6 +210,16 @@ def evaluate(cfg):
     # ---------- PLOT
     # Input image
     imshow(batch["image"][0], is_tensor=True, savefn=str(save_dir / "image.jpg"))
+
+    # 保存为obj格式
+    # mesh_pr是一个包含多个primitive的列表，我们可以分别保存每个primitive
+    for i, mesh in enumerate(mesh_pr):
+        save_obj(
+            str(save_dir / f'primitive_{i}.obj'),
+            verts=mesh.verts_list()[0],
+            faces=mesh.faces_list()[0]
+        )
+
 
     # Mesh - 保存多个视角
     view_angles = [
